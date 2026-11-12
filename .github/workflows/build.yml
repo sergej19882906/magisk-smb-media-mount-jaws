@@ -1,0 +1,35 @@
+name: build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell syntax check
+        run: |
+          sh -n service.sh
+          sh -n uninstall.sh
+
+      - name: No secrets in the repository
+        run: |
+          # The real config and binary must never be committed
+          test ! -e conf/rclone.conf
+          grep -rE "pass *= *[A-Za-z0-9]" module.prop service.sh uninstall.sh conf/rclone.conf.example \
+            && (echo "possible credential"; exit 1) || true
+
+      - name: Build module zip (without the binary)
+        run: |
+          mkdir -p /tmp/mzip/bin
+          cp module.prop service.sh uninstall.sh /tmp/mzip/
+          cp -r conf META-INF /tmp/mzip/
+          cp conf/rclone.conf.example /tmp/mzip/conf/
+          cd /tmp/mzip && zip -qr module.zip . && cd -
+          sha256sum /tmp/mzip/module.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: module-scripts-zip
+          path: /tmp/mzip/module.zip

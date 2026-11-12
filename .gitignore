@@ -1,0 +1,6 @@
+# secrets and runtime state - never commit
+conf/rclone.conf
+bin/rclone
+logs/
+run/
+*.zip

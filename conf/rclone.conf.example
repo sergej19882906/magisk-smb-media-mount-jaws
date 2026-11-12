@@ -1,0 +1,19 @@
+# Example configuration for the SMB Media Mount module.
+#
+# Copy this file to conf/rclone.conf (same directory as module.prop) and
+# replace the placeholders with the real values. The password must be
+# obscured with:
+#
+#   rclone obscure '<PASSWORD>'
+#
+# The real rclone.conf must never be committed to a repository: the
+# obscured password is obfuscation, not encryption.
+#
+# The host from this file is also used by service.sh to wait for the NAS
+# after boot, so keep it in sync with the share you mount.
+
+[smb-tv]
+type = smb
+host = <NAS-IP>
+user = <NAS-USER>
+pass = <rclone-obscured-password>

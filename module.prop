@@ -1,0 +1,6 @@
+id=smb-media-mount-jaws
+name=SMB Media Mount for Xiaomi Jaws
+version=v1.0.3
+versionCode=4
+author=sergej19882906
+description=Mounts the Synology SMB share "media" at /storage/emulated/0/NetShare via rclone mount2 (direct FUSE mount, no fusermount helper). Read/write for apps. Uninstall unmounts and restores the original state; no system changes.
